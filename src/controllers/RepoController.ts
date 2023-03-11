@@ -10,7 +10,7 @@ export default class RepoController {
     this.repoService = new RepoService(new Github());
   }
 
-  public async getUserRepos(request: Request, response: Response) {
+  public async getRepos(request: Request, response: Response) {
     try {
       return response.status(204).json();
     } catch (error) {
