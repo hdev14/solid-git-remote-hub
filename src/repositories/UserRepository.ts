@@ -1,3 +1,6 @@
+import { PrismaClient } from "@prisma/client";
+import Database from "../Database";
+
 export type UserData = {
   username: string;
   name: string;
@@ -5,15 +8,36 @@ export type UserData = {
 }
 
 export default class UserRepository {
+  private readonly connection: PrismaClient;
+
+  constructor() {
+    this.connection = Database.getConnection();
+  }
+
   public async create(data: UserData) {
-    return Promise.resolve({} as any);
+    const user = await this.connection.user.create({
+      data: {
+        id: crypto.randomUUID(),
+        name: data.name,
+        username: data.username,
+        addedAt: new Date()
+      }
+    });
+
+    return user;
   }
 
   public async findByUsername(username: string) {
-    return Promise.resolve({} as any);
+    const user = await this.connection.user.findFirst({
+      where: { username }
+    });
+
+    return user || null;
   }
 
   public async findMany() {
-    return Promise.resolve({} as any);
+    const users = await this.connection.user.findMany();
+
+    return users;
   }
 }

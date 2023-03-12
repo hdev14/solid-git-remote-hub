@@ -12,7 +12,11 @@ export default class RepoController {
 
   public async getRepos(request: Request, response: Response) {
     try {
-      return response.status(204).json();
+      const { username } = request.params;
+      
+      const repos = await this.repoService.getUserRepos(username);
+
+      return response.status(200).json(repos);
     } catch (error) {
       return response.status(500).json({ message: 'Internal Server Error' });
     }

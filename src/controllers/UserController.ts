@@ -13,7 +13,11 @@ export default class UserController {
 
   public async addProfile(request: Request, response: Response) {
     try {
-      return response.status(204).json();
+      const { username } = request.body;
+
+      const profile = await this.profileService.addUserProfile(username);
+
+      return response.status(201).json(profile);
     } catch (error) {
       return response.status(500).json({ message: 'Server Internal Error' });
     }
@@ -21,7 +25,9 @@ export default class UserController {
 
   public async getProfiles(request: Request, response: Response) {
     try {
-      return response.status(204).json();
+      const profiles = this.profileService.getUserProfiles();
+
+      return response.status(200).json(profiles);
     } catch (error) {
       return response.status(500).json({ message: 'Server Internal Error' });
     }
@@ -29,7 +35,11 @@ export default class UserController {
 
   public async getProfile(request: Request, response: Response) {
     try {
-      return response.status(204).json();
+      const { username } = request.params;
+
+      const profile = await this.profileService.getUserProfile(username);
+
+      return response.status(200).json(profile);
     } catch (error) {
       return response.status(500).json({ message: 'Server Internal Error' });
     }
