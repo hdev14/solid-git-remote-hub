@@ -19,8 +19,8 @@ export class Server {
   }
 
   private setRouters() {
-    this._application.use('users', userRouter);
-    this._application.use('repos', userRouter);
+    this._application.use('/users', userRouter);
+    this._application.use('/repos', userRouter);
   }
 }
 

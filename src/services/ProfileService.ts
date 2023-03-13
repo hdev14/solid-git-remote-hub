@@ -11,10 +11,6 @@ export default class ProfileService {
   public async addUserProfile(username: string) {
     const profile = await this.github.getProfile(username);
 
-    if (!profile) {
-      throw new Error('Profile not found');
-    }
-
     const userProfile = await this.userRepository.create({
       username: profile.login,
       name: profile.name,

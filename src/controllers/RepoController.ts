@@ -17,7 +17,8 @@ export default class RepoController {
       const repos = await this.repoService.getUserRepos(username);
 
       return response.status(200).json(repos);
-    } catch (error) {
+    } catch (error: any) {
+      console.log(error.stack);
       return response.status(500).json({ message: 'Internal Server Error' });
     }
   }

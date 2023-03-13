@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { PrismaClient } from "@prisma/client";
 import Database from "../Database";
 
@@ -38,6 +39,8 @@ export default class UserRepository {
   public async findMany() {
     const users = await this.connection.user.findMany();
 
+    console.log(users);
+    
     return users;
   }
 }
