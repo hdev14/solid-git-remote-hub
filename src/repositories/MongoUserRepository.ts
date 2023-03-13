@@ -1,44 +1,40 @@
 import crypto from 'crypto';
-import { PrismaClient } from "@prisma/client";
-import Database from "../Database";
-import IUserRepository, { UserData } from './IUserRepository';
 import User from '../entities/User';
+import Mongo from '../Mongo';
+import IUserRepository, { UserData } from './IUserRepository';
+import UserModel from './UserModel';
 
 export default class MongoUserRepository implements IUserRepository {
-  private readonly connection: PrismaClient;
-
   constructor() {
-    this.connection = Database.getConnection();
+    Mongo.connect('mongodb://test:test@localhost:27017/')
+      .then()
+      .catch(console.error.bind(console));
   }
 
   public async create(data: UserData): Promise<User> {
-    // const user = await this.connection.user.create({
-    //   data: {
-    //     id: crypto.randomUUID(),
-    //     name: data.name,
-    //     username: data.username,
-    //     addedAt: new Date()
-    //   }
-    // });
+    const user = await UserModel.create({
+      _id: crypto.randomUUID(),
+      name: data.name,
+      username: data.username,
+      addedAt: new Date()
+    });
 
-    // return new User(user.id, user.name, user.username, user.addedAt);
+    return new User(user._id, user.name, user.username, user.addedAt);
   }
 
   public async findByUsername(username: string): Promise<User | null> {
-    // const user = await this.connection.user.findFirst({
-    //   where: { username }
-    // });
+    const user = await UserModel.findOne({ username });
 
-    // if (!user) {
-    //   return null;
-    // }
+    if (!user) {
+      return null;
+    }
 
-    // return new User(user.id, user.name, user.username, user.addedAt);
+    return new User(user._id, user.name, user.username, user.addedAt);
   }
 
   public async findMany(): Promise<User[]> {
-    // const users = await this.connection.user.findMany();
+    const users = await UserModel.find({});
 
-    // return users.map((u) => new User(u.id, u.name, u.username, u.addedAt));
+    return users.map((u) => new User(u.id, u.name, u.username, u.addedAt));
   }
 }
