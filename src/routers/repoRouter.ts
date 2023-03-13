@@ -7,6 +7,6 @@ const router = Router();
 // const repoController = new RepoController(new RepoService(new Github));
 const repoController = new RepoController(new RepoService(new Gitlab()));
 
-router.get('/:username', repoController.getRepos.bind(repoController));
+router.get('/:criteria', repoController.getRepos.bind(repoController));
 
 export default router;

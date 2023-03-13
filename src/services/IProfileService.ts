@@ -1,7 +1,9 @@
+import { User } from "@prisma/client";
+
 interface IProfileService {
-  addUserProfile(username: string): Promise<any>;
-  getUserProfiles(): Promise<any>;
-  getUserProfile(username: string): Promise<any>;
+  addUserProfile(username: string): Promise<User>;
+  getUserProfiles(): Promise<User[]>;
+  getUserProfile(username: string): Promise<User>;
 }
 
 export default IProfileService;

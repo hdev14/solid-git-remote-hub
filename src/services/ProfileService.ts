@@ -1,4 +1,5 @@
-import IGitRemoteHub from "../external/IGitRemoteHub";
+import User from "../entities/User";
+import IGitRemoteHub, { UserProfile } from "../external/IGitRemoteHub";
 import IUserRepository from "../repositories/IUserRepository";
 import IProfileService from "./IProfileService";
 import ProfileNotFoundError from "./ProfileNotFoundError";
@@ -10,7 +11,7 @@ export default class ProfileService implements IProfileService {
     private readonly gitRemoteHub: IGitRemoteHub,
   ) {}
 
-  public async addUserProfile(username: string) {
+  public async addUserProfile(username: string): Promise<User> {
     const profile = await this.gitRemoteHub.getProfile(username);
 
     if (!profile) {
@@ -26,13 +27,13 @@ export default class ProfileService implements IProfileService {
     return userProfile;
   }
 
-  public async getUserProfiles() {
+  public async getUserProfiles(): Promise<User[]> {
     const userProfiles = await this.userRepository.findMany();
 
     return userProfiles;
   }
 
-  public async getUserProfile(username: string) {
+  public async getUserProfile(username: string):  Promise<User>{
     const userProfile = await this.userRepository.findByUsername(username);
 
     if (!userProfile) {

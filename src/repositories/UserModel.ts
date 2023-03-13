@@ -2,6 +2,7 @@ import { Schema, model } from 'mongoose';
 
 export interface IUser {
   _id: string;
+  externalId: string;
   name: string;
   username: string;
   addedAt: Date;
@@ -9,6 +10,10 @@ export interface IUser {
 
 const userSchema = new Schema<IUser>({
   _id: String,
+  externalId: {
+    type: String,
+    required: true,
+  },
   name: {
     type: String,
     required: true,

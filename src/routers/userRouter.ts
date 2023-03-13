@@ -15,6 +15,6 @@ router.post('/profiles', userController.addProfile.bind(userController));
 
 router.get('/profiles', userController.getProfiles.bind(userController));
 
-router.get('/profiles/:username', userController.getProfile.bind(userController));
+router.get('/profiles/:criteria', userController.getProfile.bind(userController));
 
 export default router;

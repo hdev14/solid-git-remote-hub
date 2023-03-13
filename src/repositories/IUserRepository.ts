@@ -1,6 +1,7 @@
 import User from "../entities/User";
 
 export type UserData = {
+  externalId: string;
   username: string;
   name: string;
   addedAt: Date;
