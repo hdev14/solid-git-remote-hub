@@ -1,15 +1,9 @@
 import { Request, Response } from "express";
-import Github from "../external/Github";
-import UserRepository from "../repositories/PrismaUserRepository";
-import ProfileService from "../services/ProfileService";
+import IProfileService from "../services/IProfileService";
+import ProfileNotFoundError from "../services/ProfileNotFoundError";
 
 export default class UserController {
-  private readonly profileService: ProfileService;
-
-  constructor() {
-    // Composition
-    this.profileService = new ProfileService(new UserRepository(), new Github());
-  }
+  constructor(private readonly profileService: IProfileService) { }
 
   public async addProfile(request: Request, response: Response) {
     try {
@@ -21,8 +15,8 @@ export default class UserController {
     } catch (error: any) {
       console.log(error.stack);
 
-      if (error.message === 'Profile not found') {
-        return response.status(404).json({ message: error.message});
+      if (error instanceof ProfileNotFoundError) {
+        return response.status(404).json({ message: error.message });
       }
 
       return response.status(500).json({ message: 'Server Internal Error' });
@@ -50,8 +44,8 @@ export default class UserController {
     } catch (error: any) {
       console.log(error.stack);
 
-      if (error.message === 'Profile not found') {
-        return response.status(404).json({ message: error.message});
+      if (error instanceof ProfileNotFoundError) {
+        return response.status(404).json({ message: error.message });
       }
 
       return response.status(500).json({ message: 'Server Internal Error' });

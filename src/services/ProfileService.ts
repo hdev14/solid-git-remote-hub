@@ -1,18 +1,24 @@
-import Github from "../external/Github";
-import UserRepository from "../repositories/PrismaUserRepository";
+import IGitRemoteHub from "../external/IGitRemoteHub";
+import IUserRepository from "../repositories/IUserRepository";
+import IProfileService from "./IProfileService";
+import ProfileNotFoundError from "./ProfileNotFoundError";
 
-export default class ProfileService {
+export default class ProfileService implements IProfileService {
   // Aggregation
   constructor(
-    private readonly userRepository: UserRepository,
-    private readonly github: Github,
+    private readonly userRepository: IUserRepository,
+    private readonly gitRemoteHub: IGitRemoteHub,
   ) {}
 
   public async addUserProfile(username: string) {
-    const profile = await this.github.getProfile(username);
+    const profile = await this.gitRemoteHub.getProfile(username);
+
+    if (!profile) {
+      throw new ProfileNotFoundError();
+    }
 
     const userProfile = await this.userRepository.create({
-      username: profile.login,
+      username: profile.username,
       name: profile.name,
       addedAt: new Date(),
     });
@@ -21,18 +27,18 @@ export default class ProfileService {
   }
 
   public async getUserProfiles() {
-    const profiles = await this.userRepository.findMany();
+    const userProfiles = await this.userRepository.findMany();
 
-    return profiles;
+    return userProfiles;
   }
 
   public async getUserProfile(username: string) {
-    const profile = await this.userRepository.findByUsername(username);
+    const userProfile = await this.userRepository.findByUsername(username);
 
-    if (!profile) {
-      throw new Error('Profile not found');
+    if (!userProfile) {
+      throw new ProfileNotFoundError();
     }
 
-    return profile;
+    return userProfile;
   }
 }

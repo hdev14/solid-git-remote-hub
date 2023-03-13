@@ -15,7 +15,10 @@ export default class Github implements IGitRemoteHub {
     try {
       const response = await this.axiosInstance.get(`/users/${criteria}`);
 
-      return response.data;
+      return {
+        name: response.data.name,
+        username: response.data.login,
+      };
     } catch (error: any) {
       console.log(error.stack);
 
@@ -31,12 +34,14 @@ export default class Github implements IGitRemoteHub {
     try {
       const response = await this.axiosInstance.get(`/users/${criteria}/repos`);
 
-      return response.data;
+      return response.data.map((repo: any) => ({
+        name: repo.name,
+        link: repo.html_url,
+      }));
     } catch (error: any) {
       console.log(error.stack);
 
       throw new GitRemoteHubError();
     }
-
   }
 }

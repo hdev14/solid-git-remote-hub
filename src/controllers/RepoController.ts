@@ -1,14 +1,8 @@
 import { Request, Response } from "express";
-import Github from "../external/Github";
-import RepoService from "../services/RepoService";
+import IRepoService from "../services/IRepoService";
 
 export default class RepoController {
-  private readonly repoService: RepoService;
-
-  constructor() {
-    // Composition
-    this.repoService = new RepoService(new Github());
-  }
+  constructor(private readonly repoService: IRepoService) { }
 
   public async getRepos(request: Request, response: Response) {
     try {
