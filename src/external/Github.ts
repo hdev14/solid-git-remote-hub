@@ -1,6 +1,8 @@
 import axios, { AxiosInstance } from "axios";
+import GitRemoteHubError from "./GitRemoteHubError";
+import IGitRemoteHub, { UserProfile, UserRepo } from "./IGitRemoteHub";
 
-export default class Github {
+export default class Github implements IGitRemoteHub {
   private readonly axiosInstance: AxiosInstance;
 
   constructor() {
@@ -8,16 +10,33 @@ export default class Github {
       baseURL: 'https://api.github.com',
     });
   }
-  
-  public async getProfile(username: string): Promise<any | null> {
-    const response = await this.axiosInstance.get(`/users/${username}`);
 
-    return response.data;
+  public async getProfile(criteria: string): Promise<UserProfile | null> {
+    try {
+      const response = await this.axiosInstance.get(`/users/${criteria}`);
+
+      return response.data;
+    } catch (error: any) {
+      console.log(error.stack);
+
+      if (error.response && error.response.status === 404) {
+        return null;
+      }
+
+      throw new GitRemoteHubError();
+    }
   }
 
-  public async getProfileRepos(username: string): Promise<any[]> {
-    const response = await this.axiosInstance.get(`/users/${username}/repos`);
+  public async getProfileRepos(criteria: string): Promise<UserRepo[]> {
+    try {
+      const response = await this.axiosInstance.get(`/users/${criteria}/repos`);
 
-    return response.data;
+      return response.data;
+    } catch (error: any) {
+      console.log(error.stack);
+
+      throw new GitRemoteHubError();
+    }
+
   }
 }

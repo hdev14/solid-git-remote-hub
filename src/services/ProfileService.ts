@@ -1,5 +1,5 @@
 import Github from "../external/Github";
-import UserRepository from "../repositories/UserRepository";
+import UserRepository from "../repositories/PrismaUserRepository";
 
 export default class ProfileService {
   // Aggregation

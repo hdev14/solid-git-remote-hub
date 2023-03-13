@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Github from "../external/Github";
-import UserRepository from "../repositories/UserRepository";
+import UserRepository from "../repositories/PrismaUserRepository";
 import ProfileService from "../services/ProfileService";
 
 export default class UserController {
