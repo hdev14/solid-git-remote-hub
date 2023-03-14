@@ -3,9 +3,11 @@ import mongoose from 'mongoose';
 export default class Mongo {
   private static connection?: typeof mongoose;
 
-  static async connect(uri: string) {
+  static connect(uri: string) {
     if (!Mongo.connection) {
-      Mongo.connection = await mongoose.connect(uri);
+      mongoose.connect(uri).then((connection) => {
+        Mongo.connection = connection;
+      }).catch(console.error.bind(console));
     }
   }
 }

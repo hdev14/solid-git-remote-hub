@@ -20,6 +20,7 @@ export default class Gitlab implements IGitRemoteHub {
       }
 
       return {
+        id: response.data[0].id,
         name: response.data[0].name,
         username: response.data[0].username,
       };
@@ -32,7 +33,13 @@ export default class Gitlab implements IGitRemoteHub {
 
   public async getProfileRepos(criteria: string): Promise<UserRepo[]> {
     try {
-      const response = await this.axiosInstance.get(`/users/${criteria}/projects`);
+      const profile = await this.getProfile(criteria);
+
+      if (!profile) {
+        return [];
+      }
+
+      const response = await this.axiosInstance.get(`/users/${profile.id}/projects`);
 
       return response.data.map((repo: any) => ({
         name: repo.name,

@@ -6,9 +6,7 @@ import UserModel from './UserModel';
 
 export default class MongoUserRepository implements IUserRepository {
   constructor() {
-    Mongo.connect('mongodb://test:test@localhost:27017')
-      .then()
-      .catch(console.error.bind(console));
+    Mongo.connect('mongodb://test:test@localhost:27017');
   }
 
   public async create(data: UserData): Promise<User> {

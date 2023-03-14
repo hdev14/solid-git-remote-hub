@@ -19,6 +19,7 @@ export default class ProfileService implements IProfileService {
     }
 
     const userProfile = await this.userRepository.create({
+      externalId: profile.id.toString(),
       username: profile.username,
       name: profile.name,
       addedAt: new Date(),

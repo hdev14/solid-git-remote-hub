@@ -16,6 +16,7 @@ export default class Github implements IGitRemoteHub {
       const response = await this.axiosInstance.get(`/users/${criteria}`);
 
       return {
+        id: response.data.id,
         name: response.data.name,
         username: response.data.login,
       };
