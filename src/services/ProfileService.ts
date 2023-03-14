@@ -12,7 +12,7 @@ export default class ProfileService {
     const profile = await this.github.getProfile(username);
 
     const userProfile = await this.userRepository.create({
-      externalId: profile.id,
+      externalId: profile.id.toString(),
       username: profile.login,
       name: profile.name,
       addedAt: new Date(),
