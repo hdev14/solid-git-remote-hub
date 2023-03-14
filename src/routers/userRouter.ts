@@ -7,8 +7,8 @@ import ProfileService from '../services/ProfileService';
 
 const router = Router();
 
-// const userController = new UserController(new ProfileService(new PrismaUserRepository(), new Gitlab()));
 const userController = new UserController(new ProfileService(new PrismaUserRepository(), new Github()));
+// const userController = new UserController(new ProfileService(new PrismaUserRepository(), new Gitlab()));
 // const userController = new UserController(new ProfileService(new MongoUserRepository(), new Github()));
 // const userController = new UserController(new ProfileService(new MongoUserRepository(), new Gitlab()));
 
