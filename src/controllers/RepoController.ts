@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Github from "../external/Github";
+import UserRepository from "../repositories/UserRepository";
 import RepoService from "../services/RepoService";
 
 export default class RepoController {
@@ -7,7 +8,7 @@ export default class RepoController {
 
   constructor() {
     // Composition
-    this.repoService = new RepoService(new Github());
+    this.repoService = new RepoService(new UserRepository(), new Github());
   }
 
   public async getRepos(request: Request, response: Response) {
